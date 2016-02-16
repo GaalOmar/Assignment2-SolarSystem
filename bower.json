@@ -1,0 +1,25 @@
+{
+  "name": "Assignment 2 - Solar System",
+  "authors": [
+    "GaalOmar <ga.alo.momar@gmail.com>"
+  ],
+  "description": "Assignment 2 - Solar System",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "homepage": "https://github.com/GaalOmar/Assignment2-SolarSystem.git",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "Scripts/lib"
+  ],
+  "dependencies": {
+    "three.js": "threejs#*",
+    "dat-gui": "~0.5.1",
+    "stats.js": "*",
+    "threex.colliders": "*"
+  }
+}
