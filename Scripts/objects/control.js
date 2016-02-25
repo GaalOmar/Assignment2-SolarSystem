@@ -4,8 +4,11 @@ var objects;
     // CONTROL CLASS ++++++++++++++++++++++++++++++++++++++++++
     var Control = (function () {
         // CONSTRUCTOR ++++++++++++++++++++++++++++++++++++++++
-        function Control(rotationSpeed) {
-            this.rotationSpeed = rotationSpeed;
+        function Control(zoomIn, zoomCenter, zoomOut, followEarth) {
+            this.zoomIn = zoomIn;
+            this.zoomCenter = zoomCenter;
+            this.zoomOut = zoomOut;
+            this.followEarth = followEarth;
         }
         return Control;
     })();

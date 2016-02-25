@@ -24,7 +24,6 @@ var Color = THREE.Color;
 var Vector3 = THREE.Vector3;
 var Face3 = THREE.Face3;
 var Point = objects.Point;
-var CScreen = config.Screen;
 //Custom Game Objects
 var gameObject = objects.gameObject;
 var scene;
@@ -41,8 +40,23 @@ var gui;
 var stats;
 var step = 0;
 var cubeGeometry;
+var sphereGeomtry;
 var cubeMaterial;
-var childCube;
+//Making my planets
+var sun;
+var moon;
+var mars;
+var jupitor;
+var earth;
+var saturn;
+var venus;
+//Pivots
+var moonPivot;
+var marsPivot;
+var jupitorPivot;
+var earthPivot;
+var saturnPivot;
+var venusPivot;
 function init() {
     // Instantiate a new Scene object
     scene = new Scene();
@@ -52,32 +66,70 @@ function init() {
     axes = new AxisHelper(10);
     scene.add(axes);
     console.log("Added Axis Helper to scene...");
-    //Add a Plane to the Scene
-    plane = new gameObject(new PlaneGeometry(20, 20, 1, 1), new LambertMaterial({ color: 0xff35ff }), 0, 0, 0);
-    plane.rotation.x = -0.5 * Math.PI;
-    scene.add(plane);
-    console.log("Added Plane Primitive to scene...");
-    //Add a Cube to the Scene
-    cube = new gameObject(new CubeGeometry(8, 8, 8), new LambertMaterial({ color: 0xff35ff }), 0, 4, 0);
-    scene.add(cube);
+    //Add a sun to the Scene
+    sun = new gameObject(new SphereGeometry(6, 32, 32), new LambertMaterial({ color: 0xFFFF00 }), 0, 0, 0);
+    scene.add(sun);
     console.log("Added Cube Primitive to scene...");
-    childCube = new gameObject(new CubeGeometry(2, 2, 2), new LambertMaterial({ color: 0xff0000 }), 10, 0, 0);
-    cube.add(childCube);
-    console.log("Added Child Cube Primitive to cube object...");
+    var sunLight = new THREE.PointLight(0xffffff, 2, 100);
+    sun.add(sunLight);
+    //Add planets
+    earth = new THREE.Mesh(new THREE.SphereGeometry(2, 40, 40), new LambertMaterial({ color: 0x00b300 }));
+    earth.castShadow = true;
+    earth.receiveShadow = true;
+    earth.position.set(0, 0, 50);
+    earthPivot = new THREE.Object3D();
+    sun.add(earthPivot);
+    earthPivot.add(earth);
+    moon = new THREE.Mesh(new THREE.SphereGeometry(1, 40, 40), new LambertMaterial({ color: 0x000000 }));
+    moon.castShadow = true;
+    moon.receiveShadow = true;
+    moon.position.set(0, 0, 7);
+    moonPivot = new THREE.Object3D();
+    moonPivot.position = moon.position;
+    earth.add(moonPivot);
+    moonPivot.add(moon);
+    mars = new THREE.Mesh(new THREE.SphereGeometry(4, 15, 15), new LambertMaterial({ color: 0x0000ff }));
+    mars.castShadow = true;
+    mars.receiveShadow = true;
+    mars.position.set(0, -20, 50);
+    marsPivot = new THREE.Object3D();
+    sun.add(marsPivot);
+    marsPivot.add(mars);
+    saturn = new THREE.Mesh(new THREE.SphereGeometry(1, 40, 40), new LambertMaterial({ color: 0xffff1a }));
+    saturn.castShadow = true;
+    saturn.receiveShadow = true;
+    saturn.position.set(4, 0, 20);
+    saturnPivot = new THREE.Object3D();
+    sun.add(saturnPivot);
+    saturnPivot.add(saturn);
+    venus = new THREE.Mesh(new THREE.SphereGeometry(3, 40, 40), new LambertMaterial({ color: 0xff3300 }));
+    venus.castShadow = true;
+    venus.receiveShadow = true;
+    venus.position.set(40, 8, 20);
+    venusPivot = new THREE.Object3D();
+    sun.add(venusPivot);
+    venusPivot.add(venus);
+    jupitor = new THREE.Mesh(new THREE.SphereGeometry(5, 20, 20), new LambertMaterial({ color: 0x1affb2 }));
+    jupitor.castShadow = true;
+    jupitor.receiveShadow = true;
+    jupitor.position.set(80, -40, 40);
+    jupitorPivot = new THREE.Object3D();
+    sun.add(jupitorPivot);
+    jupitorPivot.add(jupitor);
     // Add an AmbientLight to the scene
     ambientLight = new AmbientLight(0x090909);
     scene.add(ambientLight);
     console.log("Added an Ambient Light to Scene");
     // Add a SpotLight to the scene
     spotLight = new SpotLight(0xffffff);
-    spotLight.position.set(5.6, 23.1, 5.4);
-    spotLight.rotation.set(-0.8, 42.7, 19.5);
+    spotLight.position.set(-15, 10, 15);
+    // spotLight.rotation.set(-0.8, 42.7, 19.5);
     spotLight.castShadow = true;
     scene.add(spotLight);
     console.log("Added a SpotLight Light to Scene");
     // add controls
     gui = new GUI();
-    control = new Control(0.05);
+    control = new Control(200, 110, 800, 0);
     addControl(control);
     // Add framerate stats
     addStatsObject();
@@ -87,14 +139,15 @@ function init() {
     window.addEventListener('resize', onResize, false);
 }
 function onResize() {
-    camera.aspect = CScreen.RATIO;
-    //camera.aspect = window.innerWidth / window.innerHeight;
+    camera.aspect = window.innerWidth / window.innerHeight;
     camera.updateProjectionMatrix();
-    //renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setSize(CScreen.WIDTH, CScreen.HEIGHT);
+    renderer.setSize(window.innerWidth, window.innerHeight);
 }
 function addControl(controlObject) {
-    gui.add(controlObject, 'rotationSpeed', -0.5, 0.5);
+    gui.add(controlObject, 'zoomIn', -200, 200);
+    gui.add(controlObject, 'zoomCenter', -110, 110);
+    gui.add(controlObject, 'zoomOut', -800, 800);
+    gui.add(controlObject, "followEarth", true);
 }
 function addStatsObject() {
     stats = new Stats();
@@ -107,7 +160,14 @@ function addStatsObject() {
 // Setup main game loop
 function gameLoop() {
     stats.update();
-    cube.rotation.y += control.rotationSpeed;
+    //Rotating the planets
+    earthPivot.rotation.y += 0.003;
+    earth.rotation.y += 0.0003;
+    moonPivot.rotation.y += 0.05;
+    venusPivot.rotation.y += 0.06;
+    marsPivot.rotation.y += 0.07;
+    jupitorPivot.rotation.y += 0.03;
+    saturnPivot.rotation.y += 0.01;
     // render using requestAnimationFrame
     requestAnimationFrame(gameLoop);
     // render the scene
@@ -116,20 +176,18 @@ function gameLoop() {
 // Setup default renderer
 function setupRenderer() {
     renderer = new Renderer();
-    renderer.setClearColor(0xEEEEEE, 1.0);
-    renderer.setSize(CScreen.WIDTH, CScreen.HEIGHT);
-    //renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setClearColor(0x3d3d29, 1.0);
+    renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.shadowMap.enabled = true;
     console.log("Finished setting up Renderer...");
 }
 // Setup main camera for the scene
 function setupCamera() {
-    camera = new PerspectiveCamera(45, config.Screen.RATIO, 0.1, 1000);
-    //camera = new PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.x = 0.6;
-    camera.position.y = 16;
-    camera.position.z = -20.5;
-    camera.lookAt(new Vector3(0, 0, 0));
+    camera = new PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.x = -110;
+    camera.position.y = 110;
+    camera.position.z = 110;
+    camera.lookAt(scene.position);
     console.log("Finished setting up Camera...");
 }
 //# sourceMappingURL=game.js.map
