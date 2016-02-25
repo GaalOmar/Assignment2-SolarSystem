@@ -95,7 +95,7 @@ function init() {
     marsPivot = new THREE.Object3D();
     sun.add(marsPivot);
     marsPivot.add(mars);
-    saturn = new THREE.Mesh(new THREE.SphereGeometry(1, 40, 40), new LambertMaterial({ color: 0xffff1a }));
+    saturn = new THREE.Mesh(new THREE.SphereGeometry(1, 40, 40), new LambertMaterial({ color: 0xff33ff }));
     saturn.castShadow = true;
     saturn.receiveShadow = true;
     saturn.position.set(4, 0, 20);
@@ -158,7 +158,7 @@ function addStatsObject() {
 // Setup main game loop
 function gameLoop() {
     stats.update();
-    //Rotating the planets
+    //Rotating the planets with pivot 
     earthPivot.rotation.y += 0.003;
     earth.rotation.y += 0.0003;
     moonPivot.rotation.y += 0.05;
@@ -174,7 +174,7 @@ function gameLoop() {
 // Setup default renderer
 function setupRenderer() {
     renderer = new Renderer();
-    renderer.setClearColor(0x4d4d33, 1.0);
+    renderer.setClearColor(0x262626, 1.0);
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.shadowMap.enabled = true;
     console.log("Finished setting up Renderer...");
