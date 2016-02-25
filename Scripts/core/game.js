@@ -129,7 +129,7 @@ function init() {
     console.log("Added a SpotLight Light to Scene");
     // add controls
     gui = new GUI();
-    control = new Control(200, 110, 800, 0);
+    control = new Control();
     addControl(control);
     // Add framerate stats
     addStatsObject();
@@ -144,10 +144,8 @@ function onResize() {
     renderer.setSize(window.innerWidth, window.innerHeight);
 }
 function addControl(controlObject) {
-    gui.add(controlObject, 'zoomIn', -200, 200);
-    gui.add(controlObject, 'zoomCenter', -110, 110);
-    gui.add(controlObject, 'zoomOut', -800, 800);
-    gui.add(controlObject, "followEarth", true);
+    gui.add(controlObject, 'zoomIn');
+    gui.add(controlObject, 'zoomOut');
 }
 function addStatsObject() {
     stats = new Stats();
@@ -176,7 +174,7 @@ function gameLoop() {
 // Setup default renderer
 function setupRenderer() {
     renderer = new Renderer();
-    renderer.setClearColor(0x3d3d29, 1.0);
+    renderer.setClearColor(0x4d4d33, 1.0);
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.shadowMap.enabled = true;
     console.log("Finished setting up Renderer...");

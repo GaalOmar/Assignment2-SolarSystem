@@ -4,12 +4,20 @@ var objects;
     // CONTROL CLASS ++++++++++++++++++++++++++++++++++++++++++
     var Control = (function () {
         // CONSTRUCTOR ++++++++++++++++++++++++++++++++++++++++
-        function Control(zoomIn, zoomCenter, zoomOut, followEarth) {
-            this.zoomIn = zoomIn;
-            this.zoomCenter = zoomCenter;
-            this.zoomOut = zoomOut;
-            this.followEarth = followEarth;
+        function Control() {
+            this.rotation = false;
         }
+        //PUBLIC METHODS +++++++++++++++++++++++++++++++++++++++
+        Control.prototype.zoomOut = function () {
+            this.rotation = false;
+            camera.position.set(-200, 200, 200);
+            camera.lookAt(scene.position);
+        };
+        Control.prototype.zoomIn = function () {
+            this.rotation = false;
+            camera.position.set(-50, 50, 50);
+            camera.lookAt(scene.position);
+        };
         return Control;
     })();
     objects.Control = Control;

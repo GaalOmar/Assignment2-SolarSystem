@@ -4,21 +4,23 @@ module objects {
     // CONTROL CLASS ++++++++++++++++++++++++++++++++++++++++++
     export class Control { 
         //PUBLIC INSTANCE VARIABLES +++++++++++++++++++++++++++
-        public zoomIn:number;
-        public zoomCenter:number;
-        public zoomOut:number;
-        public followEarth:number;
+        rotation:Boolean;
         // CONSTRUCTOR ++++++++++++++++++++++++++++++++++++++++
-        constructor(zoomIn:number,zoomCenter:number,zoomOut:number, followEarth:number) {
-
-           this.zoomIn = zoomIn;
-           this.zoomCenter = zoomCenter;
-           this.zoomOut = zoomOut;
-           this.followEarth = followEarth;
-           
+        constructor() {
+            this.rotation = false;
         }
         
         //PUBLIC METHODS +++++++++++++++++++++++++++++++++++++++
-       
+       public zoomOut() : void {
+            this.rotation = false;
+            camera.position.set(-200,200,200);
+            camera.lookAt(scene.position);
+        }
+        
+        public zoomIn() : void {
+            this.rotation = false;
+            camera.position.set(-50,50,50);
+            camera.lookAt(scene.position);
+        }
     }
 }

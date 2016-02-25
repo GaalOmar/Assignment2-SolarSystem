@@ -164,7 +164,7 @@ function init() {
     
     // add controls
     gui = new GUI();
-    control = new Control(200,110,800,0);
+    control = new Control();
     addControl(control);
 
     // Add framerate stats
@@ -186,10 +186,9 @@ function onResize(): void {
 }
 
 function addControl(controlObject: Control): void {
-    gui.add(controlObject, 'zoomIn',-200, 200);
-    gui.add(controlObject, 'zoomCenter', -110, 110);
-	gui.add(controlObject, 'zoomOut', -800,800);
-    gui.add(controlObject, "followEarth", true);
+    gui.add(controlObject, 'zoomIn');
+	gui.add(controlObject, 'zoomOut');
+   
 }
 
 function addStatsObject() {
@@ -230,7 +229,7 @@ function gameLoop(): void {
 // Setup default renderer
 function setupRenderer(): void {
     renderer = new Renderer();
-    renderer.setClearColor(0x3d3d29, 1.0);
+    renderer.setClearColor(0x4d4d33, 1.0);
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.shadowMap.enabled = true;
     console.log("Finished setting up Renderer...");
