@@ -1,6 +1,23 @@
 /// <reference path="_reference.ts"/>
 
 // MAIN GAME FILE
+/*
+Name: Ga-alo Omar 300175123
+    Source File Name: Advanced Graphics- Solar System
+    Last Modified by: Ga-alo Omar
+    Date last Modified: Feb 25, 2016
+    Program description: Creating a solar system
+    Revision History:
+    Commit 1: Created the visual code file, Initial Commit
+    Commit 2: Added planet and a sun
+    Commit 3: Added GUI Controls
+    Commit 4: Changed the background
+    Commit 5: Added Texture
+    Commit 6: Final Commit
+   
+*/
+
+
 
 // THREEJS Aliases
 import Scene = THREE.Scene;
@@ -13,7 +30,6 @@ import SphereGeometry = THREE.SphereGeometry;
 import Geometry = THREE.Geometry;
 import AxisHelper = THREE.AxisHelper;
 import LambertMaterial = THREE.MeshLambertMaterial;
-import MeshBasicMaterial = THREE.MeshBasicMaterial;
 import Material = THREE.Material;
 import Mesh = THREE.Mesh;
 import Object3D = THREE.Object3D;
@@ -22,11 +38,6 @@ import PointLight = THREE.PointLight;
 import AmbientLight = THREE.AmbientLight;
 import Control = objects.Control;
 import GUI = dat.GUI;
-import Color = THREE.Color;
-import Vector3 = THREE.Vector3;
-import Face3 = THREE.Face3;
-import Point = objects.Point;
-
 
 //Custom Game Objects
 import gameObject = objects.gameObject;
@@ -53,7 +64,7 @@ var sun: gameObject;
 
 var moon: Mesh;
 var mars: Mesh;
-var jupitor: Mesh;
+var jupiter: Mesh;
 var earth: Mesh;
 var saturn: Mesh;
 var venus: Mesh;
@@ -61,7 +72,7 @@ var venus: Mesh;
 //Pivots
 var moonPivot: THREE.Object3D;
 var marsPivot: THREE.Object3D;
-var jupitorPivot: THREE.Object3D;
+var jupiterPivot: THREE.Object3D;
 var earthPivot: THREE.Object3D;
 var saturnPivot: THREE.Object3D;
 var venusPivot: THREE.Object3D;
@@ -83,71 +94,72 @@ function init() {
     //Add a sun to the Scene
     sun = new gameObject(
         new SphereGeometry(6, 32, 32),
-        new LambertMaterial({ color: 0xFFFF00 }),
+        new LambertMaterial({ map: THREE.ImageUtils.loadTexture('Images/sun.jpg') }),
         0, 0, 0);
+       
 
     scene.add(sun);
     console.log("Added Cube Primitive to scene...");
   
-  var sunLight = new THREE.PointLight( 0xffffff, 2, 100 );
-    sun.add(sunLight);
+  //Makes the sun emit a bright light
+    var sunlight = new PointLight(0xFFFFFF, 8, 60 );
+    sun.add(sunlight);
     
     //Add planets
-     earth = new THREE.Mesh(
-    new THREE.SphereGeometry(2, 40, 40), new LambertMaterial({color: 0x00b300}));
+    earth = new Mesh(
+    new SphereGeometry(2, 40, 40), new LambertMaterial({map: THREE.ImageUtils.loadTexture('Images/earth.jpg')}));
     earth.castShadow = true;
     earth.receiveShadow = true;
     earth.position.set(0,0,50);
-    earthPivot = new THREE.Object3D();
+    earthPivot = new Object3D();
     sun.add(earthPivot);
     earthPivot.add(earth);
     
-   moon = new THREE.Mesh(
-    new THREE.SphereGeometry(1, 40, 40), new LambertMaterial({color: 0x000000}));
+    moon = new Mesh(
+    new SphereGeometry(1, 40, 40), new LambertMaterial({map: THREE.ImageUtils.loadTexture('Images/moon.jpg')}));
     moon.castShadow = true;
     moon.receiveShadow = true;
     moon.position.set(0,0,7);
-    moonPivot = new THREE.Object3D();
+    moonPivot = new Object3D();
     moonPivot.position = moon.position; 
     earth.add(moonPivot);
     moonPivot.add(moon);
     
-    mars = new THREE.Mesh(
-    new THREE.SphereGeometry(4, 15, 15), new LambertMaterial({color: 0x0000ff}));
+    mars = new Mesh(
+    new SphereGeometry(4, 15, 15), new LambertMaterial({map: THREE.ImageUtils.loadTexture('Images/mars.jpg')}));
     mars.castShadow = true;
     mars.receiveShadow = true;
     mars.position.set(0,-20,50);
-    marsPivot = new THREE.Object3D();
+    marsPivot = new Object3D();
     sun.add(marsPivot);
     marsPivot.add(mars);
     
-    saturn = new THREE.Mesh(
-    new THREE.SphereGeometry(1, 40, 40), new LambertMaterial({color: 0xff33ff}));
+    saturn = new Mesh(
+    new SphereGeometry(1, 40, 40), new LambertMaterial({map: THREE.ImageUtils.loadTexture('Images/saturn.jpg')}));
     saturn.castShadow = true;
     saturn.receiveShadow = true;
-    saturn.position.set(4,0,20);
-    saturnPivot = new THREE.Object3D();
+    saturn.position.set(4,0,15);
+    saturnPivot = new Object3D();
     sun.add(saturnPivot);
     saturnPivot.add(saturn);
     
-    venus = new THREE.Mesh(
-    new THREE.SphereGeometry(3, 40, 40), new LambertMaterial({color: 0xff3300}));
-    
+    venus = new Mesh(
+    new SphereGeometry(3, 40, 40), new LambertMaterial({map: THREE.ImageUtils.loadTexture('Images/venus.jpg')}));
     venus.castShadow = true;
     venus.receiveShadow = true;
     venus.position.set(40,8,20);
-    venusPivot = new THREE.Object3D();
+    venusPivot = new Object3D();
     sun.add(venusPivot);
     venusPivot.add(venus);
     
-    jupitor = new THREE.Mesh(
-    new THREE.SphereGeometry(5, 20, 20), new LambertMaterial({color: 0x1affb2}));
-    jupitor.castShadow = true;
-    jupitor.receiveShadow = true;
-    jupitor.position.set(80,-40,40);
-    jupitorPivot = new THREE.Object3D();
-    sun.add(jupitorPivot);
-    jupitorPivot.add(jupitor);
+    jupiter = new Mesh(
+    new SphereGeometry(5, 20, 20), new LambertMaterial({map: THREE.ImageUtils.loadTexture('Images/jupiter.jpg')}));
+    jupiter.castShadow = true;
+    jupiter.receiveShadow = true;
+    jupiter.position.set(80,-40,40);
+    jupiterPivot = new Object3D();
+    sun.add(jupiterPivot);
+    jupiterPivot.add(jupiter);
     
     
     // Add an AmbientLight to the scene
@@ -155,11 +167,10 @@ function init() {
     scene.add(ambientLight);
     console.log("Added an Ambient Light to Scene");
 	
-    // Add a SpotLight to the scene
+   // Add a SpotLight to the scene
     spotLight = new SpotLight(0xffffff);
-    spotLight.position.set(-15, 10, 15);
-   // spotLight.rotation.set(-0.8, 42.7, 19.5);
-    spotLight.castShadow = true;
+    spotLight.position.set(0, 20, 90);
+   // spotLight.castShadow = true;
     scene.add(spotLight);
     console.log("Added a SpotLight Light to Scene");
     
@@ -205,21 +216,20 @@ function addStatsObject() {
 function gameLoop(): void {
     stats.update();
 
-    //Rotating the planets with pivot 
+    //Adding speed to my pivots  
+    venusPivot.rotation.y += 0.04;
+    
+    marsPivot.rotation.y += 0.03;
+ 
+    jupiterPivot.rotation.y += 0.02;
+
+    saturnPivot.rotation.y += 0.01;
+  
     earthPivot.rotation.y += 0.003;
-    earth.rotation.y += 0.0003;
+    earth.rotation.y += 0.003;
     
     moonPivot.rotation.y += 0.05;
    
-    venusPivot.rotation.y += 0.06;
-    
-    marsPivot.rotation.y += 0.07;
- 
-    jupitorPivot.rotation.y += 0.03;
-
-    saturnPivot.rotation.y += 0.01;
-    
-    
     // render using requestAnimationFrame
     requestAnimationFrame(gameLoop);
 	
@@ -230,7 +240,7 @@ function gameLoop(): void {
 // Setup default renderer
 function setupRenderer(): void {
     renderer = new Renderer();
-    renderer.setClearColor(0x262626, 1.0);
+    renderer.setClearColor(0x1a1a1a, 1.0);
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.shadowMap.enabled = true;
     console.log("Finished setting up Renderer...");
@@ -240,8 +250,8 @@ function setupRenderer(): void {
 function setupCamera(): void {
     camera = new PerspectiveCamera(45, window.innerWidth / window.innerHeight,  0.1, 1000);
     camera.position.x = -110;
-    camera.position.y = 110;
-    camera.position.z = 110;
+    camera.position.y = 70;
+    camera.position.z = 90;
     camera.lookAt(scene.position);
     console.log("Finished setting up Camera...");
 }

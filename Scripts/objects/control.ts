@@ -8,6 +8,7 @@ module objects {
         // CONSTRUCTOR ++++++++++++++++++++++++++++++++++++++++
         constructor() {
             this.rotation = false;
+           
         }
         
         //PUBLIC METHODS +++++++++++++++++++++++++++++++++++++++
@@ -22,5 +23,7 @@ module objects {
             camera.position.set(-50,50,50);
             camera.lookAt(scene.position);
         }
+        
+        
     }
 }
